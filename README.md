@@ -67,6 +67,25 @@ python -m http.server 8000
 # then visit http://localhost:8000
 ```
 
+### Deployment
+
+#### Vercel (Recommended)
+1. Connect your GitHub repository to Vercel
+2. Vercel will automatically detect and deploy the static HTML
+3. The `vercel.json` configuration ensures proper routing and security headers
+
+#### Manual Deployment
+```bash
+# Install dependencies (if any)
+npm install
+
+# Build (no build required for static HTML)
+npm run build
+
+# Deploy to Vercel
+vercel --prod
+```
+
 ## Browser Support
 
 - Chrome/Chromium (latest)
