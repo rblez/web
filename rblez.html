@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>rblez terminal</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body {
+      background: #000 url('wallpaper.jpg') center/cover no-repeat fixed;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', 'Geist Mono', monospace;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .win {
+      background: #000;
+      border-radius: 0;
+      overflow: hidden;
+      width: 100%;
+      height: 100vh;
+      max-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      border: none;
+      position: relative;
+    }
+
+    /* Small devices (phones) */
+    @media(max-width:480px) {
+      body {
+        display: block;
+      }
+      
+      .win {
+        height: 90vh;
+        max-height: 90vh;
+        width: 90vw;
+        margin: 5vh auto;
+        border-radius: 12px;
+        border: 1px solid #333;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .tb {
+        padding: 8px 12px;
+        gap: 8px;
+      }
+      
+      .dots {
+        gap: 5px;
+      }
+      
+      .d {
+        width: 10px;
+        height: 10px;
+      }
+      
+      .ttl {
+        font-size: 10px;
+      }
+      
+      .term {
+        padding: 10px 12px;
+      }
+    }
+
+    /* Medium devices (tablets) */
+    @media(min-width:481px) and (max-width:768px) {
+      body {
+        display: block;
+      }
+      
+      .win {
+        height: 85vh;
+        max-height: 85vh;
+        width: 85vw;
+        margin: 7.5vh auto;
+        border-radius: 12px;
+        border: 1px solid #333;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .tb {
+        padding: 9px 14px;
+        gap: 10px;
+      }
+      
+      .term {
+        padding: 12px 14px;
+      }
+    }
+
+    /* Large devices (desktop) */
+    @media(min-width:769px) {
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .win {
+        border-radius: 12px;
+        height: 600px;
+        max-height: 600px;
+        max-width: 900px;
+        margin: 24px auto;
+        border: 1px solid #333;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        transform: scale(1.25);
+        transform-origin: center;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    /* Extra large devices */
+    @media(min-width:1200px) {
+      .win {
+        max-width: 1000px;
+        min-height: 650px;
+      }
+    }
+
+    .tb {
+      background: #111;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #222;
+      flex-shrink: 0;
+      height: 40px;
+    }
+
+    .dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .d {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      transition: opacity 0.2s;
+    }
+
+    .r {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #555;
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 0.8;
+      text-align: center;
+    }
+
+    .r:hover {
+      opacity: 0.8;
+    }
+
+    .y, .g {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .r {
+      background: #ff5f57
+    }
+
+    .y {
+      background: #666
+    }
+
+    .g {
+      background: #666
+    }
+
+    .ttl {
+      flex: 1;
+      text-align: center;
+      color: #555;
+      font-size: 12px;
+    }
+
+    .term {
+      padding: 14px 16px;
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      cursor: text;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .term::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    .term::-webkit-scrollbar-track {
+      background: #000;
+    }
+
+    .term::-webkit-scrollbar-thumb {
+      background: #333;
+      border-radius: 2px;
+    }
+
+    /* Firefox scrollbar */
+    .term {
+      scrollbar-width: thin;
+      scrollbar-color: #333 #000;
+    }
+
+    .spacer {
+      flex: 1
+    }
+
+    .line {
+      font-size: clamp(11px, 2.5vw, 13px);
+      line-height: 1.6;
+      color: #ededed;
+      white-space: pre-wrap;
+      word-break: break-word;
+      min-height: 20px;
+      margin-bottom: 2px;
+    }
+
+    .prompt-row {
+      display: flex;
+      align-items: flex-start;
+      font-size: clamp(11px, 2.5vw, 13px);
+      line-height: 1.4;
+      min-height: 20px;
+      flex-wrap: nowrap;
+      margin-bottom: 2px;
+    }
+
+    .pr {
+      color: #fff;
+      font-weight: 700;
+      white-space: nowrap;
+      font-size: clamp(11px, 2.5vw, 13px);
+      flex-shrink: 0;
+      line-height: 1.4;
+    }
+
+    .typed {
+      color: #ededed;
+      flex: 1;
+      min-width: 0;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .cur {
+      display: inline-block;
+      width: clamp(6px, 1.5vw, 8px);
+      height: clamp(12px, 2vw, 14px);
+      background: #fff;
+      margin-left: 1px;
+      animation: blink 1s step-end infinite;
+      flex-shrink: 0;
+      align-self: center;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0
+      }
+    }
+
+    .k {
+      color: #888;
+    }
+
+    .grn {
+      color: #28c840;
+    }
+
+    .err {
+      color: #ff5f57;
+    }
+
+
+    a {
+      color: #ededed;
+      border-bottom: 1px solid #444;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    a:hover {
+      border-bottom-color: #ededed;
+    }
+
+    /* Touch device optimizations */
+    @media (hover: none) and (pointer: coarse) {
+      .cur {
+        width: clamp(8px, 2vw, 10px);
+      }
+      
+      .term {
+        padding: 12px 14px;
+      }
+      
+      .tb {
+        padding: 12px 16px;
+      }
+    }
+
+    /* Landscape mobile optimizations */
+    @media (max-height: 500px) and (orientation: landscape) {
+      body {
+        display: block;
+      }
+      
+      .win {
+        margin: 0;
+        border-radius: 0;
+        height: 100vh;
+        width: 100vw;
+      }
+      
+      .tb {
+        padding: 6px 12px;
+        min-height: 32px;
+      }
+      
+      .ttl {
+        font-size: 9px;
+      }
+      
+      .term {
+        padding: 8px 12px;
+      }
+    }
+
+    #hidden-inp {
+      position: fixed;
+      opacity: 0;
+      pointer-events: none;
+      width: 1px;
+      height: 1px;
+      left: -9999px;
+      top: -9999px;
+    }
+
+    .welcome {
+      color: #28c840;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="win">
+    <div class="tb">
+      <div class="dots">
+        <div class="d r" id="close-btn" title="Close"></div>
+        <div class="d y" id="minimize-btn" title="Minimize"></div>
+        <div class="d g" id="maximize-btn" title="Maximize"></div>
+      </div>
+      <div class="ttl">rblez@Ray — Home</div>
+    </div>
+    <div class="term" id="term">
+      <input id="hidden-inp" autocomplete="off" spellcheck="false" />
+      <div class="spacer"></div>
+      <div class="line welcome">Welcome to rblez terminal. Type 'help' for available commands.</div>
+      <div class="prompt-row" id="active-line">
+        <span class="pr">rblez@Ray&nbsp;Home&nbsp;%&nbsp;</span>
+        <span class="typed" id="typed-text"><span class="cur" id="cursor"></span></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const term = document.getElementById('term');
+    let history = [], hIdx = -1, currentVal = '';
+
+    const COMMANDS = {
+      help: () => `<span class="grn">commands:</span>
+  <span class="k">whoami</span>     personal info
+  <span class="k">about</span>      about me
+  <span class="k">skills</span>     tech stack
+  <span class="k">contact</span>    find me online
+  <span class="k">open</span>       open tiendly | memlink | github | x
+  <span class="k">clear</span>      clear terminal
+  <span class="k">help</span>       show this`,
+
+      whoami: () => `<span class="k">name      </span>Ray
+<span class="k">age       </span>19
+<span class="k">location  </span>Santiago de Cuba, Cuba
+<span class="k">os        </span>Linux · Windows
+<span class="k">status    </span><b style="color:#fff">self-taught</b> · dropped university to build
+<span class="k">interests </span>pixel art · software engineering`,
+
+      about: () => `Software engineer and pixel art lover building real
+products for real people. Started reselling gift cards
+and game top-ups, now building digital infrastructure
+for Cuban businesses.
+I don't wait for the right conditions — I build with what I have.`,
+
+
+      skills: () => 'TypeScript JavaScript Bun PNPM Next.js Tailwind React MCP Clerk Vercel Cloudflare Resend Railway Hostinger',
+
+      contact: () => `<span class="k">email    </span><a href="mailto:hello@rblez.com">hello@rblez.com</a>
+<span class="k">x        </span><a href="https://x.com/rblezzzz" target="_blank">x.com/rblezzzz</a>
+<span class="k">telegram </span><a href="https://t.me/rblez" target="_blank">t.me/rblez</a>
+<span class="k">linkedin </span><a href="https://linkedin.com/in/rblez" target="_blank">linkedin.com/in/rblez</a>
+<span class="k">github   </span><a href="https://github.com/rblez" target="_blank">github.com/rblez</a>`,
+
+      open: (args) => {
+        const map = { tiendly: 'https://tiendly.lat', memlink: 'https://github.com/rblez/memlink', github: 'https://github.com/rblez', x: 'https://x.com/rblezzzz' };
+        const t = args[0]?.toLowerCase();
+        if (!t) return `<span class="err">usage: open &lt;tiendly|memlink|github|x&gt;</span>`;
+        if (!map[t]) return `<span class="err">open: unknown "${t}"</span>`;
+        window.open(map[t], '_blank');
+        return `opening ${t}...`;
+      },
+
+      clear: () => {
+        // Keep the input, clear everything else
+        const hi = document.getElementById('hidden-inp');
+        term.innerHTML = '';
+        term.appendChild(hi);
+        
+        term.innerHTML += `
+          <div class="line welcome">
+            Welcome to rblez terminal. Type 'help' for available commands.
+          </div>
+        `;
+
+        newPrompt();
+        hi.focus();
+
+        return null;
+      },
+
+    };
+
+    const COMPLETIONS = Object.keys(COMMANDS).concat(['tiendly','memlink','github','x']);
+
+    function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    function addOutput(html) {
+      const al = document.getElementById('active-line');
+
+      const d = document.createElement('div');
+
+      d.className = 'line';
+      d.innerHTML = html;
+
+      if (al) {
+        term.insertBefore(d, al);
+      } else {
+        term.appendChild(d);
+      }
+
+      requestAnimationFrame(() => {
+        term.scrollTop = term.scrollHeight;
+      });
+    }
+
+    function freezePrompt(val) {
+      const al = document.getElementById('active-line');
+
+      if (!al) return;
+
+      const frozen = document.createElement('div');
+      frozen.className = 'line';
+
+      frozen.innerHTML = `
+        <span class="pr">rblez@Ray&nbsp;Home&nbsp;%&nbsp;</span>${esc(val)}
+      `;
+
+      al.replaceWith(frozen);
+    }
+
+    function newPrompt() {
+      const old = document.getElementById('active-line');
+
+      if (old) old.remove();
+
+      const row = document.createElement('div');
+
+      row.className = 'prompt-row';
+      row.id = 'active-line';
+
+      row.innerHTML = `
+        <span class="pr">rblez@Ray&nbsp;Home&nbsp;%&nbsp;</span>
+        <span class="typed" id="typed-text">
+          <span class="cur" id="cursor"></span>
+        </span>
+      `;
+
+      term.appendChild(row);
+
+      currentVal = '';
+
+      term.scrollTop = term.scrollHeight;
+    }
+
+    function updateDisplay() {
+      const tt = document.getElementById('typed-text');
+
+      if (!tt) return;
+
+      tt.innerHTML = `${esc(currentVal)}<span class="cur" id="cursor"></span>`;
+    }
+
+    function run(val) {
+      const trimmed = val.trim();
+
+      freezePrompt(trimmed);
+
+      currentVal = '';
+
+      if (!trimmed) {
+        newPrompt();
+        return;
+      }
+
+      history.unshift(trimmed);
+      hIdx = -1;
+
+      const [cmd, ...args] = trimmed.split(' ');
+
+      const fn = COMMANDS[cmd.toLowerCase()];
+
+      if (!fn) {
+        addOutput(`<span class="err">command not found: ${esc(cmd)}</span>`);
+        newPrompt();
+        return;
+      }
+
+      const result = fn(args);
+
+      if (result === null) {
+        return;
+      }
+
+      if (result !== undefined) {
+        addOutput(result);
+      }
+
+      newPrompt();
+    }
+
+    const hi = document.getElementById('hidden-inp');
+
+    hi.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { run(currentVal); }
+      else if (e.key === 'Backspace') { currentVal = currentVal.slice(0, -1); updateDisplay(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); if (hIdx < history.length - 1) currentVal = history[++hIdx]; updateDisplay(); }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); hIdx > 0 ? (currentVal = history[--hIdx]) : (hIdx = -1, currentVal = ''); updateDisplay(); }
+      else if (e.key === 'Tab') { e.preventDefault(); const v = currentVal.toLowerCase(); const m = COMPLETIONS.find(c => c.startsWith(v) && c !== v); if (m) { currentVal = m; updateDisplay(); } }
+      else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) { currentVal += e.key; updateDisplay(); }
+    });
+
+    term.addEventListener('click', () => hi.focus());
+    document.addEventListener('keydown', () => hi.focus());
+
+    // Focus on load
+    window.addEventListener('load', () => {
+      hi.focus();
+      term.scrollTop = term.scrollHeight;
+    });
+
+    // Prevent context menu
+    document.addEventListener('contextmenu', e => e.preventDefault());
+
+    // Handle Ctrl+C and Ctrl+L
+    hi.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key === 'c') {
+        e.preventDefault();
+        currentVal = '';
+        updateDisplay();
+        addOutput('<span class="err">^C</span>');
+        newPrompt();
+      }
+      if (e.ctrlKey && e.key === 'l') {
+        e.preventDefault();
+        COMMANDS.clear();
+      }
+    });
+
+    // Window controls functionality
+    let isMaximized = false;
+    
+    // Close button functionality
+    document.getElementById('close-btn').addEventListener('click', () => {
+      // First close terminal with animation
+      const win = document.querySelector('.win');
+      win.style.transition = 'opacity 0.3s, transform 0.3s';
+      win.style.opacity = '0';
+      win.style.transform = 'scale(0.9)';
+      
+      // Then close page after animation
+      setTimeout(() => {
+        window.close();
+        // Fallback for browsers that can't close window
+        window.location.href = 'about:blank';
+      }, 300);
+    });
+    
+    // Minimize button functionality - DISABLED
+    document.getElementById('minimize-btn').addEventListener('click', () => {
+      // Disabled - no functionality
+      return;
+    });
+    
+    // Maximize button functionality - DISABLED
+    document.getElementById('maximize-btn').addEventListener('click', () => {
+      // Disabled - no functionality
+      return;
+    });
+  </script>
+</body>
+
+</html>
