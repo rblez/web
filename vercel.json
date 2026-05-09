@@ -1,12 +1,14 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
   "rewrites": [
     {
       "source": "/",
-      "destination": "/rblez.html"
+      "destination": "/rblez"
     },
     {
       "source": "/(.*)",
-      "destination": "/rblez.html"
+      "destination": "/rblez"
     }
   ],
   "headers": [
