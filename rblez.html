@@ -41,6 +41,8 @@
       /* Desktop default */
       width: 860px;
       height: 560px;
+      transform: scale(1.25);
+      transform-origin: center center;
     }
 
     /* Tablet */
@@ -48,6 +50,7 @@
       .win {
         width: 90vw;
         height: 80vh;
+        transform: none;
       }
     }
 
@@ -139,6 +142,7 @@
       color: #ededed;
       white-space: pre-wrap;
       word-break: break-word;
+      margin-bottom: 8px;
     }
 
     /* ── Active prompt row ── */
@@ -151,18 +155,35 @@
     }
 
     .pr {
-      color: #fff;
       font-weight: 700;
       white-space: nowrap;
       flex-shrink: 0;
     }
 
+    .pr-user {
+      color: #28c840;
+    }
+
+    .pr-host {
+      color: #28c840;
+    }
+
+    .pr-separator {
+      color: #28c840;
+    }
+
+    .pr-arrow {
+      color: #28c840;
+    }
+
     .typed {
-      color: #ededed;
+      color: #ffffff;
       flex: 1;
       min-width: 0;
       white-space: pre-wrap;
       word-break: break-word;
+      padding-right: 4px;
+      padding-left: 6px; /* fix: space between prompt and typed text */
     }
 
     .cur {
@@ -170,7 +191,7 @@
       width: clamp(6px, 1.5vw, 8px);
       height: 1em;
       background: #fff;
-      margin-left: 1px;
+      margin-left: 4px;
       animation: blink 1s step-end infinite;
       vertical-align: text-bottom;
     }
@@ -204,6 +225,34 @@
       left: -9999px;
       top: -9999px;
     }
+
+    /* typing animation */
+    .typing-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.2em;
+      background: #28c840;
+      animation: typing-blink 1s step-end infinite;
+      vertical-align: text-bottom;
+      margin-left: 2px;
+    }
+
+    @keyframes typing-blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    /* fade-in animation */
+    .fade-in {
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    
   </style>
 </head>
 
@@ -215,12 +264,12 @@
         <div class="d y"></div>
         <div class="d g"></div>
       </div>
-      <div class="ttl">rblez@Ray — Home</div>
+      <div class="ttl">rblez@Ray — Terminal</div>
     </div>
     <div class="term" id="term">
       <input id="hidden-inp" autocomplete="off" spellcheck="false" />
       <div class="spacer"></div>
-      <div class="line welcome">Welcome to rblez terminal. Type 'help' for available commands.</div>
+      <div class="line welcome" id="welcome"></div>
       <!-- active prompt inserted by JS -->
     </div>
   </div>
@@ -240,6 +289,9 @@
   <span class="k">skills</span>     tech stack
   <span class="k">contact</span>    find me online
   <span class="k">open</span>       open tiendly | memlink | github | x
+  <span class="k">pwd</span>        show current directory
+  <span class="k">projects</span>   show my projects
+  <span class="k">now</span>        current time and date
   <span class="k">clear</span>      clear terminal
   <span class="k">help</span>       show this`,
 
@@ -283,6 +335,69 @@ React  MCP  Clerk  Vercel  Cloudflare  Resend  Railway  Hostinger`,
         return `opening ${t}...`;
       },
 
+      pwd: () => `<span class="k">/home/rblez/projects</span>`,
+
+      projects: () =>
+`<span class="grn">active projects:</span>
+<span class="k">tiendly</span>     <a href="https://tiendly.lat" target="_blank">tiendly.lat</a> — digital infrastructure for Cuban businesses
+<span class="k">memlink</span>     <a href="https://github.com/rblez/memlink" target="_blank">github.com/rblez/memlink</a> — persistent memory across sessions
+<span class="k">rblez.com</span>   <a href="https://rblez.com" target="_blank">rblez.com</a> — personal terminal portfolio`,
+
+      now: () => {
+        const now = new Date();
+        return `<span class="k">current time:</span> ${now.toLocaleString('en-US', { 
+          weekday: 'short', 
+          year: 'numeric', 
+          month: 'short', 
+          day: 'numeric', 
+          hour: '2-digit', 
+          minute: '2-digit' 
+        })}
+<span class="k">working on:</span> building digital tools for Cuban businesses
+<span class="k">status:</span> <span style="color:#28c840">●</span> available for freelance work`;
+      },
+
+      sudo: () => {
+        const messages = [
+          `<span class="err">sudo: permission denied</span>`,
+          `<span class="err">sudo: you are not in the sudoers file</span>`,
+          `<span class="err">sudo: this incident will be reported</span>`
+        ];
+        return messages[Math.floor(Math.random() * messages.length)];
+      },
+
+      hack: () => {
+        const hackAnimation = [
+          `<span class="grn">Initializing hack sequence...</span>`,
+          `<span class="grn">Accessing mainframe...</span>`,
+          `<span class="grn">Bypassing firewall...</span>`,
+          `<span class="grn">Extracting data...</span>`,
+          `<span class="err">Just kidding! I'm a good hacker 😊</span>`
+        ];
+        let result = '';
+        hackAnimation.forEach((line, i) => {
+          setTimeout(() => {
+            addOutput(line);
+            if (i === hackAnimation.length - 1) newPrompt();
+          }, i * 500);
+        });
+        return `<span class="grn">Hack sequence initiated...</span>`;
+      },
+
+      matrix: () => {
+        const matrixChars = '01';
+        let result = '<span style="color:#0f0; font-family: monospace;">';
+        for (let i = 0; i < 8; i++) {
+          for (let j = 0; j < 60; j++) {
+            result += matrixChars[Math.floor(Math.random() * 2)];
+          }
+          result += '\n';
+        }
+        result += '</span>';
+        result += `<span class="grn">Wake up, Neo...</span>`;
+        return result;
+      },
+
       clear: () => {
         clearTerminal();
         return null;
@@ -294,6 +409,26 @@ React  MCP  Clerk  Vercel  Cloudflare  Resend  Railway  Hostinger`,
     /* ── Helpers ── */
     function esc(t) {
       return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function typeWelcome() {
+      const welcome = document.getElementById('welcome');
+      const text = "Welcome to rblez terminal. Type 'help' for available commands.";
+      let index = 0;
+      
+      welcome.innerHTML = '';
+      
+      function typeChar() {
+        if (index < text.length) {
+          welcome.innerHTML = text.substring(0, index + 1) + '<span class="typing-cursor"></span>';
+          index++;
+          setTimeout(typeChar, 50);
+        } else {
+          welcome.innerHTML = text;
+        }
+      }
+      
+      typeChar();
     }
 
     function scrollBottom() {
@@ -308,7 +443,7 @@ React  MCP  Clerk  Vercel  Cloudflare  Resend  Railway  Hostinger`,
 
       const pr = document.createElement('span');
       pr.className = 'pr';
-      pr.textContent = 'rblez@Ray Home % ';
+      pr.innerHTML = '<span class="pr-user">rblez</span><span class="pr-separator">@</span><span class="pr-host">Ray</span><span class="pr-arrow"> ></span>';
 
       const typed = document.createElement('span');
       typed.className = 'typed';
@@ -355,9 +490,9 @@ React  MCP  Clerk  Vercel  Cloudflare  Resend  Railway  Hostinger`,
 
       const pr = document.createElement('span');
       pr.className = 'pr';
-      pr.textContent = 'rblez@Ray Home % ';
+      pr.innerHTML = '<span class="pr-user">rblez</span><span class="pr-separator">@</span><span class="pr-host">Ray</span><span class="pr-arrow"> ></span>';
 
-      const txt = document.createTextNode(val);
+      const txt = document.createTextNode(' ' + val);
 
       frozen.appendChild(pr);
       frozen.appendChild(txt);
@@ -367,7 +502,7 @@ React  MCP  Clerk  Vercel  Cloudflare  Resend  Railway  Hostinger`,
     function addOutput(html) {
       const al = document.getElementById('active-line');
       const d  = document.createElement('div');
-      d.className = 'line';
+      d.className = 'line fade-in';
       d.innerHTML = html;
 
       if (al) {
@@ -388,7 +523,7 @@ React  MCP  Clerk  Vercel  Cloudflare  Resend  Railway  Hostinger`,
 
       const welcome = document.createElement('div');
       welcome.className = 'line welcome';
-      welcome.textContent = "Welcome to rblez terminal. Type 'help' for available commands.";
+      welcome.id = 'welcome';
 
       term.appendChild(hi);        // keep the real input in the DOM
       term.appendChild(spacer);
@@ -396,6 +531,7 @@ React  MCP  Clerk  Vercel  Cloudflare  Resend  Railway  Hostinger`,
 
       newPrompt();
       hi.focus();
+      typeWelcome();
     }
 
     /* ── Command runner ── */
@@ -464,6 +600,15 @@ React  MCP  Clerk  Vercel  Cloudflare  Resend  Railway  Hostinger`,
           } else if (e.ctrlKey && e.key === 'l') {
             e.preventDefault();
             clearTerminal();
+          } else if (e.ctrlKey && e.key === 'v') {
+            e.preventDefault();
+            navigator.clipboard.readText().then(text => {
+              currentVal += text;
+              updateDisplay();
+            }).catch(() => {
+              // Fallback for browsers that don't support clipboard API
+              console.log('Clipboard access denied');
+            });
           } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
             currentVal += e.key;
             updateDisplay();
@@ -473,13 +618,36 @@ React  MCP  Clerk  Vercel  Cloudflare  Resend  Railway  Hostinger`,
 
     /* Focus management */
     term.addEventListener('click', () => hi.focus());
+    term.addEventListener('touchstart', () => hi.focus());
     document.addEventListener('keydown', () => hi.focus());
+    
+    /* Mobile keyboard support */
+    hi.addEventListener('focus', () => {
+      // Ensure mobile keyboard appears
+      if (navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i)) {
+        hi.setAttribute('autocomplete', 'off');
+        hi.setAttribute('autocorrect', 'off');
+        hi.setAttribute('autocapitalize', 'off');
+        hi.setAttribute('spellcheck', 'false');
+      }
+    });
+
+    /* Prevent zoom on input focus (iOS) */
+    hi.addEventListener('touchstart', (e) => {
+      if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+        const viewport = document.querySelector('meta[name=viewport]');
+        if (viewport) {
+          viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');
+        }
+      }
+    });
 
     /* ── Init ── */
     window.addEventListener('load', () => {
       newPrompt();
       hi.focus();
       scrollBottom();
+      typeWelcome();
     });
 
     /* Close button */
