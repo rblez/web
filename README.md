@@ -4,14 +4,14 @@ An interactive terminal-style portfolio website built with vanilla HTML, CSS, an
 
 ## Features
 
-### 🚀 Interactive Terminal
+### Interactive Terminal
 - Fully functional command-line interface
 - Command history with arrow key navigation
 - Tab completion for available commands
 - Real-time typing animations
 - Mobile-responsive design with touch support
 
-### 💻 Available Commands
+### Available Commands
 - `help` - Show all available commands
 - `whoami` - Display personal information
 - `about` - About me and my background
@@ -23,19 +23,19 @@ An interactive terminal-style portfolio website built with vanilla HTML, CSS, an
 - `now` - Current time and work status
 - `clear` - Clear terminal screen
 
-### 🎮 Easter Eggs
+### Easter Eggs
 - `sudo` - Permission denied messages
 - `hack` - Animated hack sequence
 - `matrix` - Matrix-style binary rain effect
 
-### 🎨 Visual Features
+### Visual Features
 - Typing animation for welcome message
 - Dynamic prompt colors (green for `rblez@Ray >`, white for input)
 - Fade-in animations for output lines
 - Responsive design for desktop, tablet, and mobile
 - Custom favicon set for all platforms
 
-### 🔧 Technical Features
+### Technical Features
 - Paste support (Ctrl+V) with clipboard API
 - Mobile keyboard optimization
 - Touch-friendly interface
@@ -69,11 +69,11 @@ python -m http.server 8000
 
 ## Browser Support
 
-- ✅ Chrome/Chromium (latest)
-- ✅ Firefox (latest)
-- ✅ Safari (latest)
-- ✅ Edge (latest)
-- ✅ Mobile browsers (iOS Safari, Chrome Mobile)
+- Chrome/Chromium (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+- Mobile browsers (iOS Safari, Chrome Mobile)
 
 ## Contributing
 
@@ -87,11 +87,11 @@ MIT License - feel free to use this for your own terminal-style projects.
 
 **Ray (rblez)** - Software engineer building digital infrastructure for Cuban businesses.
 
-- 📧 Email: hello@rblez.com
-- 🐦 X/Twitter: [@rblezzzz](https://x.com/rblezzzz)
-- 💼 LinkedIn: [linkedin.com/in/rblez](https://linkedin.com/in/rblez)
-- 🐙 GitHub: [github.com/rblez](https://github.com/rblez)
+- Email: hello@rblez.com
+- X/Twitter: [@rblezzzz](https://x.com/rblezzzz)
+- LinkedIn: [linkedin.com/in/rblez](https://linkedin.com/in/rblez)
+- GitHub: [github.com/rblez](https://github.com/rblez)
 
 ---
 
-*Built with ❤️ and terminal nostalgia*
+Built with terminal nostalgia
