@@ -120,6 +120,7 @@
         padding: 5vh 5vw;
         height: 100vh;
         overflow: hidden;
+        background: #000 url('./wallpaper.webp') center/cover no-repeat fixed;
       }
       
       .mobile-message {
@@ -136,9 +137,9 @@
       
       .win {
         width: 90vw;
-        height: 90vh;
+        height: 80vh;
         border-radius: 10px;
-        margin: 5vh auto;
+        margin: 5vh auto 5vh auto;
         transform: none;
       }
       
@@ -189,11 +190,11 @@
         color: #fff;
       }
       
-      /* Hide input and cursor on mobile */
+      /* Show input on mobile for limited commands */
       #hidden-inp,
       .prompt-row,
       .cur {
-        display: none;
+        display: block;
       }
     }
 
@@ -408,14 +409,14 @@
       
       <!-- Mobile content (shown only on mobile) -->
       <div class="mobile-content">
-        <h3>👋 Ray - Software Engineer</h3>
+        <h3>Ray - Software Engineer</h3>
         <p><strong>Age:</strong> 19 | <strong>Location:</strong> Santiago de Cuba, Cuba</p>
         <p><strong>Status:</strong> Self-taught developer building digital infrastructure for Cuban businesses</p>
         
-        <h3>💼 About</h3>
+        <h3>About</h3>
         <p>Software engineer and pixel art lover building real products for real people. Started reselling gift cards and game top-ups, now building digital infrastructure for Cuban businesses. I don't wait for the right conditions — I build with what I have.</p>
         
-        <h3>🛠️ Skills</h3>
+        <h3>Skills</h3>
         <div class="skills">
           <span class="skill-tag">TypeScript</span>
           <span class="skill-tag">JavaScript</span>
@@ -427,12 +428,12 @@
           <span class="skill-tag">Cloudflare</span>
         </div>
         
-        <h3>🚀 Projects</h3>
+        <h3>Projects</h3>
         <p><strong>Tiendly:</strong> <a href="https://tiendly.lat" target="_blank">tiendly.lat</a> - Digital infrastructure for Cuban businesses</p>
         <p><strong>Memlink:</strong> <a href="https://github.com/rblez/memlink" target="_blank">github.com/rblez/memlink</a> - Persistent memory across sessions</p>
         <p><strong>Portfolio:</strong> <a href="https://rblez.com" target="_blank">rblez.com</a> - Terminal-style portfolio</p>
         
-        <h3>📧 Contact</h3>
+        <h3>Contact</h3>
         <p><strong>Email:</strong> <a href="mailto:hello@rblez.com">hello@rblez.com</a></p>
         <p><strong>X/Twitter:</strong> <a href="https://x.com/rblezzzz" target="_blank">@rblezzzz</a></p>
         <p><strong>GitHub:</strong> <a href="https://github.com/rblez" target="_blank">github.com/rblez</a></p>
@@ -572,6 +573,55 @@ React  MCP  Clerk  Vercel  Cloudflare  Resend  Railway  Hostinger`,
       clear: () => {
         clearTerminal();
         return null;
+      },
+
+      // Mobile-specific commands
+      resume: () => {
+        if (navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i)) {
+          return `<span class="k">name      </span>Ray
+<span class="k">age       </span>19
+<span class="k">location  </span>Santiago de Cuba, Cuba
+<span class="k">status    </span><b style="color:#fff">self-taught</b> · building digital infrastructure`;
+        }
+        return `<span class="err">resume: command not available on desktop</span>`;
+      },
+
+      show: (args) => {
+        if (navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i)) {
+          const section = args[0] || '';
+          
+          if (section === 'all') {
+            return `<span class="k">name      </span>Ray
+<span class="k">age       </span>19
+<span class="k">location  </span>Santiago de Cuba, Cuba
+<span class="k">status    </span><b style="color:#fff">self-taught</b> · building digital infrastructure
+
+<span class="k">about     </span>Software engineer building real products for Cuban businesses
+
+<span class="k">skills     </span>TypeScript JavaScript React Next.js Node.js Tailwind Vercel Cloudflare
+
+<span class="k">projects   </span>Tiendly: tiendly.lat - Digital infrastructure
+<span class="k">           </span>Memlink: github.com/rblez/memlink - Memory across sessions
+<span class="k">           </span>Portfolio: rblez.com - Terminal portfolio
+
+<span class="k">contact    </span>Email: hello@rblez.com
+<span class="k">           </span>X: @rblezzzz
+<span class="k">           </span>GitHub: github.com/rblez`;
+          } else if (section === 'skills') {
+            return `<span class="k">skills     </span>TypeScript JavaScript React Next.js Node.js Tailwind Vercel Cloudflare`;
+          } else if (section === 'projects') {
+            return `<span class="k">projects   </span>Tiendly: tiendly.lat - Digital infrastructure
+<span class="k">           </span>Memlink: github.com/rblez/memlink - Memory across sessions
+<span class="k">           </span>Portfolio: rblez.com - Terminal portfolio`;
+          } else if (section === 'contact') {
+            return `<span class="k">contact    </span>Email: hello@rblez.com
+<span class="k">           </span>X: @rblezzzz
+<span class="k">           </span>GitHub: github.com/rblez`;
+          } else {
+            return `<span class="err">usage: show &lt;all|skills|projects|contact&gt;</span>`;
+          }
+        }
+        return `<span class="err">show: command not available on desktop</span>`;
       }
     };
 
