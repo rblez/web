@@ -108,9 +108,13 @@
         height: 80vh;
         border-radius: 10px;
         margin: 5vh auto;
+        transition: height 0.3s ease, margin 0.3s ease;
       }
       .tb  { padding: 8px 12px; min-height: 40px; }
-      .term { padding: 10px 12px; }
+      .term { 
+        padding: 10px 12px 20px 12px;
+        scroll-behavior: smooth;
+      }
     }
 
     /* Landscape phone */
@@ -675,6 +679,28 @@ React  MCP  Clerk  Vercel  Cloudflare  Resend  Railway  Hostinger`,
         hi.setAttribute('spellcheck', 'false');
         hi.setAttribute('inputmode', 'text');
         hi.setAttribute('enterkeyhint', 'send');
+        
+        // Adjust viewport for keyboard
+        setTimeout(() => {
+          if (window.innerHeight < window.screen.height * 0.7) {
+            const win = document.querySelector('.win');
+            if (win) {
+              win.style.height = '50vh';
+              win.style.marginTop = '2vh';
+            }
+          }
+        }, 300);
+      }
+    });
+
+    hi.addEventListener('blur', () => {
+      // Restore original size when keyboard hides
+      if (navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i)) {
+        const win = document.querySelector('.win');
+        if (win) {
+          win.style.height = '80vh';
+          win.style.marginTop = '5vh';
+        }
       }
     });
 
@@ -690,15 +716,42 @@ React  MCP  Clerk  Vercel  Cloudflare  Resend  Railway  Hostinger`,
 
     /* Mobile input improvements */
     hi.addEventListener('input', (e) => {
-      // Handle mobile input events
+      e.preventDefault();
       const value = e.target.value;
-      if (value !== currentVal) {
+      
+      if (value !== currentVal && !hi.isComposing) {
         currentVal = value;
         updateDisplay();
+        scrollToCursor();
         // Clear the hidden input to prevent double input
         e.target.value = '';
       }
     });
+
+    /* Handle composition events for mobile keyboards */
+    hi.addEventListener('compositionstart', () => {
+      hi.isComposing = true;
+    });
+
+    hi.addEventListener('compositionend', (e) => {
+      hi.isComposing = false;
+      if (e.data) {
+        currentVal += e.data;
+        updateDisplay();
+        scrollToCursor();
+      }
+      e.target.value = '';
+    });
+
+    /* Auto-scroll to cursor */
+    function scrollToCursor() {
+      const activeLine = document.getElementById('active-line');
+      if (activeLine) {
+        setTimeout(() => {
+          activeLine.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }, 50);
+      }
+    }
 
     /* Touch events for mobile */
     term.addEventListener('touchend', (e) => {
