@@ -98,15 +98,18 @@
     /* Phone */
     @media (max-width: 480px) {
       body {
-        align-items: flex-start;
-        padding: 5vh 5vw;
+        align-items: stretch;
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
       }
       .win {
-        width: 100%;
-        height: 88vh;
-        border-radius: 10px;
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        margin: 0;
       }
-      .tb  { padding: 8px 12px; }
+      .tb  { padding: 8px 12px; min-height: 40px; }
       .term { padding: 10px 12px; }
     }
 
