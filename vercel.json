@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/rblez.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/rblez.html"
+    }
+  ]
+}
