@@ -17,128 +17,67 @@
     }
 
     body {
-      background: #000 url('wallpaper.jpg') center/cover no-repeat fixed;
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', 'Geist Mono', monospace;
-      overflow: hidden;
+      background: #000 url('wallpaper.webp') center/cover no-repeat fixed;
+      font-family: 'Geist Mono', 'SF Mono', monospace;
       margin: 0;
       padding: 0;
       height: 100vh;
       width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
+    /* ── Window ── */
     .win {
       background: #000;
-      border-radius: 0;
+      border-radius: 12px;
       overflow: hidden;
-      width: 100%;
-      height: 100vh;
-      max-height: 100vh;
       display: flex;
       flex-direction: column;
-      border: none;
-      position: relative;
+      border: 1px solid #333;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+
+      /* Desktop default */
+      width: 860px;
+      height: 560px;
     }
 
-    /* Small devices (phones) */
-    @media(max-width:480px) {
-      body {
-        display: block;
-      }
-      
+    /* Tablet */
+    @media (max-width: 900px) {
       .win {
-        height: 90vh;
-        max-height: 90vh;
         width: 90vw;
-        margin: 5vh auto;
-        border-radius: 12px;
-        border: 1px solid #333;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-        display: flex;
-        flex-direction: column;
-      }
-      
-      .tb {
-        padding: 8px 12px;
-        gap: 8px;
-      }
-      
-      .dots {
-        gap: 5px;
-      }
-      
-      .d {
-        width: 10px;
-        height: 10px;
-      }
-      
-      .ttl {
-        font-size: 10px;
-      }
-      
-      .term {
-        padding: 10px 12px;
+        height: 80vh;
       }
     }
 
-    /* Medium devices (tablets) */
-    @media(min-width:481px) and (max-width:768px) {
+    /* Phone */
+    @media (max-width: 480px) {
       body {
-        display: block;
+        align-items: flex-start;
+        padding: 5vh 5vw;
       }
-      
       .win {
-        height: 85vh;
-        max-height: 85vh;
-        width: 85vw;
-        margin: 7.5vh auto;
-        border-radius: 12px;
-        border: 1px solid #333;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-        display: flex;
-        flex-direction: column;
+        width: 100%;
+        height: 88vh;
+        border-radius: 10px;
       }
-      
-      .tb {
-        padding: 9px 14px;
-        gap: 10px;
-      }
-      
-      .term {
-        padding: 12px 14px;
-      }
+      .tb  { padding: 8px 12px; }
+      .term { padding: 10px 12px; }
     }
 
-    /* Large devices (desktop) */
-    @media(min-width:769px) {
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      
+    /* Landscape phone */
+    @media (max-height: 500px) and (orientation: landscape) {
       .win {
-        border-radius: 12px;
-        height: 600px;
-        max-height: 600px;
-        max-width: 900px;
-        margin: 24px auto;
-        border: 1px solid #333;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-        transform: scale(1.25);
-        transform-origin: center;
-        display: flex;
-        flex-direction: column;
+        width: 96vw;
+        height: 96vh;
+        border-radius: 0;
       }
+      .tb   { padding: 5px 12px; min-height: 30px; }
+      .term { padding: 6px 12px; }
     }
 
-    /* Extra large devices */
-    @media(min-width:1200px) {
-      .win {
-        max-width: 1000px;
-        min-height: 650px;
-      }
-    }
-
+    /* ── Title bar ── */
     .tb {
       background: #111;
       padding: 10px 16px;
@@ -150,10 +89,7 @@
       height: 40px;
     }
 
-    .dots {
-      display: flex;
-      gap: 7px;
-    }
+    .dots { display: flex; gap: 7px; }
 
     .d {
       width: 12px;
@@ -162,38 +98,11 @@
       transition: opacity 0.2s;
     }
 
-    .r {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #555;
-      font-size: 12px;
-      font-weight: 300;
-      line-height: 0.8;
-      text-align: center;
-    }
+    .r { background: #ff5f57; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .y { background: #666; cursor: not-allowed; opacity: 0.6; }
+    .g { background: #666; cursor: not-allowed; opacity: 0.6; }
 
-    .r:hover {
-      opacity: 0.8;
-    }
-
-    .y, .g {
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-
-    .r {
-      background: #ff5f57
-    }
-
-    .y {
-      background: #666
-    }
-
-    .g {
-      background: #666
-    }
+    .r:hover { opacity: 0.8; }
 
     .ttl {
       flex: 1;
@@ -202,76 +111,56 @@
       font-size: 12px;
     }
 
+    /* ── Terminal body ── */
     .term {
       padding: 14px 16px;
       flex: 1;
       overflow-y: auto;
       overflow-x: hidden;
       cursor: text;
-      position: relative;
       display: flex;
       flex-direction: column;
       min-height: 0;
       -webkit-overflow-scrolling: touch;
     }
 
-    .term::-webkit-scrollbar {
-      width: 3px;
-    }
+    .term::-webkit-scrollbar { width: 3px; }
+    .term::-webkit-scrollbar-track { background: #000; }
+    .term::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+    .term { scrollbar-width: thin; scrollbar-color: #333 #000; }
 
-    .term::-webkit-scrollbar-track {
-      background: #000;
-    }
+    /* pushes content to bottom on first load */
+    .spacer { flex: 1; }
 
-    .term::-webkit-scrollbar-thumb {
-      background: #333;
-      border-radius: 2px;
-    }
-
-    /* Firefox scrollbar */
-    .term {
-      scrollbar-width: thin;
-      scrollbar-color: #333 #000;
-    }
-
-    .spacer {
-      flex: 1
-    }
-
+    /* ── Lines ── */
     .line {
-      font-size: clamp(11px, 2.5vw, 13px);
-      line-height: 1.6;
+      font-size: clamp(11px, 2vw, 13px);
+      line-height: 1.65;
       color: #ededed;
       white-space: pre-wrap;
       word-break: break-word;
-      min-height: 20px;
-      margin-bottom: 2px;
     }
 
+    /* ── Active prompt row ── */
     .prompt-row {
       display: flex;
       align-items: flex-start;
-      font-size: clamp(11px, 2.5vw, 13px);
-      line-height: 1.4;
-      min-height: 20px;
+      font-size: clamp(11px, 2vw, 13px);
+      line-height: 1.65;
       flex-wrap: nowrap;
-      margin-bottom: 2px;
     }
 
     .pr {
       color: #fff;
       font-weight: 700;
       white-space: nowrap;
-      font-size: clamp(11px, 2.5vw, 13px);
       flex-shrink: 0;
-      line-height: 1.4;
     }
 
     .typed {
       color: #ededed;
       flex: 1;
       min-width: 0;
-      line-height: 1.4;
       white-space: pre-wrap;
       word-break: break-word;
     }
@@ -279,92 +168,33 @@
     .cur {
       display: inline-block;
       width: clamp(6px, 1.5vw, 8px);
-      height: clamp(12px, 2vw, 14px);
+      height: 1em;
       background: #fff;
       margin-left: 1px;
       animation: blink 1s step-end infinite;
-      flex-shrink: 0;
-      align-self: center;
+      vertical-align: text-bottom;
     }
 
     @keyframes blink {
-
-      0%,
-      100% {
-        opacity: 1
-      }
-
-      50% {
-        opacity: 0
-      }
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
     }
 
-    .k {
-      color: #888;
-    }
-
-    .grn {
-      color: #28c840;
-    }
-
-    .err {
-      color: #ff5f57;
-    }
-
+    /* ── Colours ── */
+    .k   { color: #888; }
+    .grn { color: #28c840; }
+    .err { color: #ff5f57; }
 
     a {
       color: #ededed;
       border-bottom: 1px solid #444;
       text-decoration: none;
-      word-break: break-all;
     }
+    a:hover { border-bottom-color: #ededed; }
 
-    a:hover {
-      border-bottom-color: #ededed;
-    }
+    .welcome { color: #28c840; }
 
-    /* Touch device optimizations */
-    @media (hover: none) and (pointer: coarse) {
-      .cur {
-        width: clamp(8px, 2vw, 10px);
-      }
-      
-      .term {
-        padding: 12px 14px;
-      }
-      
-      .tb {
-        padding: 12px 16px;
-      }
-    }
-
-    /* Landscape mobile optimizations */
-    @media (max-height: 500px) and (orientation: landscape) {
-      body {
-        display: block;
-      }
-      
-      .win {
-        margin: 0;
-        border-radius: 0;
-        height: 100vh;
-        width: 100vw;
-      }
-      
-      .tb {
-        padding: 6px 12px;
-        min-height: 32px;
-      }
-      
-      .ttl {
-        font-size: 9px;
-      }
-      
-      .term {
-        padding: 8px 12px;
-      }
-    }
-
+    /* hidden real input */
     #hidden-inp {
       position: fixed;
       opacity: 0;
@@ -374,21 +204,16 @@
       left: -9999px;
       top: -9999px;
     }
-
-    .welcome {
-      color: #28c840;
-      margin-bottom: 10px;
-    }
   </style>
 </head>
 
 <body>
-  <div class="win">
+  <div class="win" id="win">
     <div class="tb">
       <div class="dots">
-        <div class="d r" id="close-btn" title="Close"></div>
-        <div class="d y" id="minimize-btn" title="Minimize"></div>
-        <div class="d g" id="maximize-btn" title="Maximize"></div>
+        <div class="d r" id="close-btn"></div>
+        <div class="d y"></div>
+        <div class="d g"></div>
       </div>
       <div class="ttl">rblez@Ray — Home</div>
     </div>
@@ -396,19 +221,20 @@
       <input id="hidden-inp" autocomplete="off" spellcheck="false" />
       <div class="spacer"></div>
       <div class="line welcome">Welcome to rblez terminal. Type 'help' for available commands.</div>
-      <div class="prompt-row" id="active-line">
-        <span class="pr">rblez@Ray&nbsp;Home&nbsp;%&nbsp;</span>
-        <span class="typed" id="typed-text"><span class="cur" id="cursor"></span></span>
-      </div>
+      <!-- active prompt inserted by JS -->
     </div>
   </div>
 
   <script>
-    const term = document.getElementById('term');
-    let history = [], hIdx = -1, currentVal = '';
+    const term  = document.getElementById('term');
+    const hi    = document.getElementById('hidden-inp');
 
+    let cmdHistory = [], hIdx = -1, currentVal = '';
+
+    /* ── Commands ── */
     const COMMANDS = {
-      help: () => `<span class="grn">commands:</span>
+      help: () =>
+`<span class="grn">commands:</span>
   <span class="k">whoami</span>     personal info
   <span class="k">about</span>      about me
   <span class="k">skills</span>     tech stack
@@ -417,66 +243,130 @@
   <span class="k">clear</span>      clear terminal
   <span class="k">help</span>       show this`,
 
-      whoami: () => `<span class="k">name      </span>Ray
+      whoami: () =>
+`<span class="k">name      </span>Ray
 <span class="k">age       </span>19
 <span class="k">location  </span>Santiago de Cuba, Cuba
 <span class="k">os        </span>Linux · Windows
 <span class="k">status    </span><b style="color:#fff">self-taught</b> · dropped university to build
 <span class="k">interests </span>pixel art · software engineering`,
 
-      about: () => `Software engineer and pixel art lover building real
+      about: () =>
+`Software engineer and pixel art lover building real
 products for real people. Started reselling gift cards
 and game top-ups, now building digital infrastructure
 for Cuban businesses.
 I don't wait for the right conditions — I build with what I have.`,
 
+      skills: () =>
+`TypeScript  JavaScript  Bun  PNPM  Next.js  Tailwind
+React  MCP  Clerk  Vercel  Cloudflare  Resend  Railway  Hostinger`,
 
-      skills: () => 'TypeScript JavaScript Bun PNPM Next.js Tailwind React MCP Clerk Vercel Cloudflare Resend Railway Hostinger',
-
-      contact: () => `<span class="k">email    </span><a href="mailto:hello@rblez.com">hello@rblez.com</a>
+      contact: () =>
+`<span class="k">email    </span><a href="mailto:hello@rblez.com">hello@rblez.com</a>
 <span class="k">x        </span><a href="https://x.com/rblezzzz" target="_blank">x.com/rblezzzz</a>
 <span class="k">telegram </span><a href="https://t.me/rblez" target="_blank">t.me/rblez</a>
 <span class="k">linkedin </span><a href="https://linkedin.com/in/rblez" target="_blank">linkedin.com/in/rblez</a>
 <span class="k">github   </span><a href="https://github.com/rblez" target="_blank">github.com/rblez</a>`,
 
       open: (args) => {
-        const map = { tiendly: 'https://tiendly.lat', memlink: 'https://github.com/rblez/memlink', github: 'https://github.com/rblez', x: 'https://x.com/rblezzzz' };
-        const t = args[0]?.toLowerCase();
-        if (!t) return `<span class="err">usage: open &lt;tiendly|memlink|github|x&gt;</span>`;
-        if (!map[t]) return `<span class="err">open: unknown "${t}"</span>`;
+        const map = {
+          tiendly: 'https://tiendly.lat',
+          memlink: 'https://github.com/rblez/memlink',
+          github:  'https://github.com/rblez',
+          x:       'https://x.com/rblezzzz'
+        };
+        const t = (args[0] || '').toLowerCase();
+        if (!t)      return `<span class="err">usage: open &lt;tiendly|memlink|github|x&gt;</span>`;
+        if (!map[t]) return `<span class="err">open: unknown "${esc(t)}"</span>`;
         window.open(map[t], '_blank');
         return `opening ${t}...`;
       },
 
       clear: () => {
-        // Keep the input, clear everything else
-        const hi = document.getElementById('hidden-inp');
-        term.innerHTML = '';
-        term.appendChild(hi);
-        
-        term.innerHTML += `
-          <div class="line welcome">
-            Welcome to rblez terminal. Type 'help' for available commands.
-          </div>
-        `;
-
-        newPrompt();
-        hi.focus();
-
+        clearTerminal();
         return null;
-      },
-
+      }
     };
 
-    const COMPLETIONS = Object.keys(COMMANDS).concat(['tiendly','memlink','github','x']);
+    const COMPLETIONS = [...Object.keys(COMMANDS), 'tiendly', 'memlink', 'github', 'x'];
 
-    function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+    /* ── Helpers ── */
+    function esc(t) {
+      return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function scrollBottom() {
+      requestAnimationFrame(() => { term.scrollTop = term.scrollHeight; });
+    }
+
+    /* ── DOM builders ── */
+    function buildPromptRow() {
+      const row = document.createElement('div');
+      row.className = 'prompt-row';
+      row.id = 'active-line';
+
+      const pr = document.createElement('span');
+      pr.className = 'pr';
+      pr.textContent = 'rblez@Ray Home % ';
+
+      const typed = document.createElement('span');
+      typed.className = 'typed';
+      typed.id = 'typed-text';
+
+      const cur = document.createElement('span');
+      cur.className = 'cur';
+      cur.id = 'cursor';
+
+      typed.appendChild(cur);
+      row.appendChild(pr);
+      row.appendChild(typed);
+      return row;
+    }
+
+    function newPrompt() {
+      // Remove old active line if any
+      const old = document.getElementById('active-line');
+      if (old) old.remove();
+
+      currentVal = '';
+      const row = buildPromptRow();
+      term.appendChild(row);
+      scrollBottom();
+    }
+
+    function updateDisplay() {
+      const tt = document.getElementById('typed-text');
+      if (!tt) return;
+      // safe: set textContent then append cursor span
+      tt.textContent = currentVal;
+      const cur = document.createElement('span');
+      cur.className = 'cur';
+      cur.id = 'cursor';
+      tt.appendChild(cur);
+    }
+
+    function freezePrompt(val) {
+      const al = document.getElementById('active-line');
+      if (!al) return;
+
+      const frozen = document.createElement('div');
+      frozen.className = 'line';
+
+      const pr = document.createElement('span');
+      pr.className = 'pr';
+      pr.textContent = 'rblez@Ray Home % ';
+
+      const txt = document.createTextNode(val);
+
+      frozen.appendChild(pr);
+      frozen.appendChild(txt);
+      al.replaceWith(frozen);
+    }
 
     function addOutput(html) {
       const al = document.getElementById('active-line');
-
-      const d = document.createElement('div');
-
+      const d  = document.createElement('div');
       d.className = 'line';
       d.innerHTML = html;
 
@@ -485,64 +375,33 @@ I don't wait for the right conditions — I build with what I have.`,
       } else {
         term.appendChild(d);
       }
-
-      requestAnimationFrame(() => {
-        term.scrollTop = term.scrollHeight;
-      });
+      scrollBottom();
     }
 
-    function freezePrompt(val) {
-      const al = document.getElementById('active-line');
+    function clearTerminal() {
+      // Remove everything except the hidden input
+      while (term.firstChild) term.removeChild(term.firstChild);
 
-      if (!al) return;
+      // Re-add spacer + welcome + hidden input
+      const spacer = document.createElement('div');
+      spacer.className = 'spacer';
 
-      const frozen = document.createElement('div');
-      frozen.className = 'line';
+      const welcome = document.createElement('div');
+      welcome.className = 'line welcome';
+      welcome.textContent = "Welcome to rblez terminal. Type 'help' for available commands.";
 
-      frozen.innerHTML = `
-        <span class="pr">rblez@Ray&nbsp;Home&nbsp;%&nbsp;</span>${esc(val)}
-      `;
+      term.appendChild(hi);        // keep the real input in the DOM
+      term.appendChild(spacer);
+      term.appendChild(welcome);
 
-      al.replaceWith(frozen);
+      newPrompt();
+      hi.focus();
     }
 
-    function newPrompt() {
-      const old = document.getElementById('active-line');
-
-      if (old) old.remove();
-
-      const row = document.createElement('div');
-
-      row.className = 'prompt-row';
-      row.id = 'active-line';
-
-      row.innerHTML = `
-        <span class="pr">rblez@Ray&nbsp;Home&nbsp;%&nbsp;</span>
-        <span class="typed" id="typed-text">
-          <span class="cur" id="cursor"></span>
-        </span>
-      `;
-
-      term.appendChild(row);
-
-      currentVal = '';
-
-      term.scrollTop = term.scrollHeight;
-    }
-
-    function updateDisplay() {
-      const tt = document.getElementById('typed-text');
-
-      if (!tt) return;
-
-      tt.innerHTML = `${esc(currentVal)}<span class="cur" id="cursor"></span>`;
-    }
-
+    /* ── Command runner ── */
     function run(val) {
       const trimmed = val.trim();
-
       freezePrompt(trimmed);
-
       currentVal = '';
 
       if (!trimmed) {
@@ -550,11 +409,10 @@ I don't wait for the right conditions — I build with what I have.`,
         return;
       }
 
-      history.unshift(trimmed);
+      cmdHistory.unshift(trimmed);
       hIdx = -1;
 
       const [cmd, ...args] = trimmed.split(' ');
-
       const fn = COMMANDS[cmd.toLowerCase()];
 
       if (!fn) {
@@ -564,86 +422,76 @@ I don't wait for the right conditions — I build with what I have.`,
       }
 
       const result = fn(args);
-
-      if (result === null) {
-        return;
-      }
-
-      if (result !== undefined) {
-        addOutput(result);
-      }
-
+      if (result === null) return;   // clear already called newPrompt
+      if (result !== undefined) addOutput(result);
       newPrompt();
     }
 
-    const hi = document.getElementById('hidden-inp');
-
+    /* ── Input handling ── */
     hi.addEventListener('keydown', e => {
-      if (e.key === 'Enter') { run(currentVal); }
-      else if (e.key === 'Backspace') { currentVal = currentVal.slice(0, -1); updateDisplay(); }
-      else if (e.key === 'ArrowUp') { e.preventDefault(); if (hIdx < history.length - 1) currentVal = history[++hIdx]; updateDisplay(); }
-      else if (e.key === 'ArrowDown') { e.preventDefault(); hIdx > 0 ? (currentVal = history[--hIdx]) : (hIdx = -1, currentVal = ''); updateDisplay(); }
-      else if (e.key === 'Tab') { e.preventDefault(); const v = currentVal.toLowerCase(); const m = COMPLETIONS.find(c => c.startsWith(v) && c !== v); if (m) { currentVal = m; updateDisplay(); } }
-      else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) { currentVal += e.key; updateDisplay(); }
+      switch (e.key) {
+        case 'Enter':
+          run(currentVal);
+          break;
+        case 'Backspace':
+          currentVal = currentVal.slice(0, -1);
+          updateDisplay();
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          if (hIdx < cmdHistory.length - 1) currentVal = cmdHistory[++hIdx];
+          updateDisplay();
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          if (hIdx > 0) { currentVal = cmdHistory[--hIdx]; }
+          else          { hIdx = -1; currentVal = ''; }
+          updateDisplay();
+          break;
+        case 'Tab':
+          e.preventDefault();
+          const v = currentVal.toLowerCase();
+          const m = COMPLETIONS.find(c => c.startsWith(v) && c !== v);
+          if (m) { currentVal = m; updateDisplay(); }
+          break;
+        default:
+          if (e.ctrlKey && e.key === 'c') {
+            e.preventDefault();
+            currentVal = '';
+            updateDisplay();
+            addOutput('<span class="err">^C</span>');
+            newPrompt();
+          } else if (e.ctrlKey && e.key === 'l') {
+            e.preventDefault();
+            clearTerminal();
+          } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+            currentVal += e.key;
+            updateDisplay();
+          }
+      }
     });
 
+    /* Focus management */
     term.addEventListener('click', () => hi.focus());
     document.addEventListener('keydown', () => hi.focus());
 
-    // Focus on load
+    /* ── Init ── */
     window.addEventListener('load', () => {
+      newPrompt();
       hi.focus();
-      term.scrollTop = term.scrollHeight;
+      scrollBottom();
     });
 
-    // Prevent context menu
-    document.addEventListener('contextmenu', e => e.preventDefault());
-
-    // Handle Ctrl+C and Ctrl+L
-    hi.addEventListener('keydown', e => {
-      if (e.ctrlKey && e.key === 'c') {
-        e.preventDefault();
-        currentVal = '';
-        updateDisplay();
-        addOutput('<span class="err">^C</span>');
-        newPrompt();
-      }
-      if (e.ctrlKey && e.key === 'l') {
-        e.preventDefault();
-        COMMANDS.clear();
-      }
-    });
-
-    // Window controls functionality
-    let isMaximized = false;
-    
-    // Close button functionality
+    /* Close button */
     document.getElementById('close-btn').addEventListener('click', () => {
-      // First close terminal with animation
-      const win = document.querySelector('.win');
+      const win = document.getElementById('win');
       win.style.transition = 'opacity 0.3s, transform 0.3s';
       win.style.opacity = '0';
-      win.style.transform = 'scale(0.9)';
-      
-      // Then close page after animation
-      setTimeout(() => {
-        window.close();
-        // Fallback for browsers that can't close window
-        window.location.href = 'about:blank';
-      }, 300);
+      win.style.transform = 'scale(0.92)';
+      setTimeout(() => { window.close(); window.location.href = 'about:blank'; }, 300);
     });
-    
-    // Minimize button functionality - DISABLED
-    document.getElementById('minimize-btn').addEventListener('click', () => {
-      // Disabled - no functionality
-      return;
-    });
-    
-    // Maximize button functionality - DISABLED
-    document.getElementById('maximize-btn').addEventListener('click', () => {
-      // Disabled - no functionality
-      return;
-    });
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
   </script>
 </body>
 
