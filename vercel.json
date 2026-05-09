@@ -2,6 +2,14 @@
   "version": 2,
   "routes": [
     {
+      "src": "/wallpaper.webp",
+      "dest": "/wallpaper.webp"
+    },
+    {
+      "src": "/rblez.html",
+      "dest": "/rblez.html"
+    },
+    {
       "src": "/",
       "dest": "/rblez.html"
     },
