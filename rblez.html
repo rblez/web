@@ -670,6 +670,8 @@ React  MCP  Clerk  Vercel  Cloudflare  Resend  Railway  Hostinger`,
         hi.setAttribute('autocorrect', 'off');
         hi.setAttribute('autocapitalize', 'off');
         hi.setAttribute('spellcheck', 'false');
+        hi.setAttribute('inputmode', 'text');
+        hi.setAttribute('enterkeyhint', 'send');
       }
     });
 
@@ -680,6 +682,31 @@ React  MCP  Clerk  Vercel  Cloudflare  Resend  Railway  Hostinger`,
         if (viewport) {
           viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');
         }
+      }
+    });
+
+    /* Mobile input improvements */
+    hi.addEventListener('input', (e) => {
+      // Handle mobile input events
+      const value = e.target.value;
+      if (value !== currentVal) {
+        currentVal = value;
+        updateDisplay();
+        // Clear the hidden input to prevent double input
+        e.target.value = '';
+      }
+    });
+
+    /* Touch events for mobile */
+    term.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      hi.focus();
+      
+      // Trigger virtual keyboard on mobile
+      if (navigator.userAgent.match(/Android|iPhone|iPad|iPod/i)) {
+        setTimeout(() => {
+          hi.click();
+        }, 100);
       }
     });
 
