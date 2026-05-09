@@ -2,6 +2,14 @@
   "version": 2,
   "routes": [
     {
+      "src": "/favicon.ico",
+      "dest": "/favicon.ico"
+    },
+    {
+      "src": "/site.webmanifest",
+      "dest": "/site.webmanifest"
+    },
+    {
       "src": "/wallpaper.webp",
       "dest": "/wallpaper.webp"
     },
