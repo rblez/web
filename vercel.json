@@ -1,19 +1,12 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "rblez.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/",
-      "dest": "/rblez.html"
+      "source": "/",
+      "destination": "/rblez.html"
     },
     {
-      "src": "/(.*)",
-      "dest": "/rblez.html"
+      "source": "/(.*)",
+      "destination": "/rblez.html"
     }
   ],
   "headers": [
