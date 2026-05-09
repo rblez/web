@@ -69,6 +69,24 @@
       align-items: center;
     }
 
+    /* Mobile message - hidden by default */
+    .mobile-message {
+      display: none;
+      text-align: center;
+      color: #fff;
+      font-family: 'Geist Mono', 'SF Mono', monospace;
+      padding: 40px 20px;
+      background: rgba(0, 0, 0, 0.9);
+      border-radius: 12px;
+      border: 1px solid #333;
+      max-width: 90vw;
+    }
+    
+    /* Mobile content - hidden by default */
+    .mobile-content {
+      display: none;
+    }
+
     /* ── Window ── */
     .win {
       background: #000;
@@ -103,17 +121,79 @@
         height: 100vh;
         overflow: hidden;
       }
+      
+      .mobile-message {
+        display: none;
+      }
+      
+      .mobile-content {
+        display: block;
+      }
+      
+      .welcome {
+        display: none;
+      }
+      
       .win {
         width: 90vw;
-        height: 80vh;
+        height: 90vh;
         border-radius: 10px;
         margin: 5vh auto;
-        transition: height 0.3s ease, margin 0.3s ease;
+        transform: none;
       }
+      
       .tb  { padding: 8px 12px; min-height: 40px; }
       .term { 
-        padding: 10px 12px 20px 12px;
-        scroll-behavior: smooth;
+        padding: 10px 12px;
+        overflow-y: auto;
+      }
+      
+      .mobile-content {
+        color: #ededed;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      
+      .mobile-content h3 {
+        color: #4fc3f7;
+        margin: 15px 0 10px 0;
+        font-size: 16px;
+      }
+      
+      .mobile-content p {
+        margin-bottom: 10px;
+      }
+      
+      .mobile-content a {
+        color: #ededed;
+        border-bottom: 1px solid #444;
+        text-decoration: none;
+      }
+      
+      .mobile-content a:hover {
+        border-bottom-color: #ededed;
+      }
+      
+      .mobile-content .skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin: 10px 0;
+      }
+      
+      .mobile-content .skill-tag {
+        background: #333;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 12px;
+        color: #fff;
+      }
+      
+      /* Hide input and cursor on mobile */
+      #hidden-inp,
+      .prompt-row,
+      .cur {
+        display: none;
       }
     }
 
@@ -305,6 +385,14 @@
 </head>
 
 <body>
+  <div class="mobile-message">
+    <span class="emoji">💻</span>
+    <h2>Desktop Only</h2>
+    <p>This terminal experience is designed for desktop computers.</p>
+    <p>Please visit this site on a desktop or laptop computer for the best experience.</p>
+    <p>🖥️ Desktop recommended 🖥️</p>
+  </div>
+  
   <div class="win" id="win">
     <div class="tb">
       <div class="dots">
@@ -317,7 +405,42 @@
     <div class="term" id="term">
       <input id="hidden-inp" autocomplete="off" spellcheck="false" />
       <div class="spacer"></div>
+      
+      <!-- Mobile content (shown only on mobile) -->
+      <div class="mobile-content">
+        <h3>👋 Ray - Software Engineer</h3>
+        <p><strong>Age:</strong> 19 | <strong>Location:</strong> Santiago de Cuba, Cuba</p>
+        <p><strong>Status:</strong> Self-taught developer building digital infrastructure for Cuban businesses</p>
+        
+        <h3>💼 About</h3>
+        <p>Software engineer and pixel art lover building real products for real people. Started reselling gift cards and game top-ups, now building digital infrastructure for Cuban businesses. I don't wait for the right conditions — I build with what I have.</p>
+        
+        <h3>🛠️ Skills</h3>
+        <div class="skills">
+          <span class="skill-tag">TypeScript</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">Next.js</span>
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">Tailwind</span>
+          <span class="skill-tag">Vercel</span>
+          <span class="skill-tag">Cloudflare</span>
+        </div>
+        
+        <h3>🚀 Projects</h3>
+        <p><strong>Tiendly:</strong> <a href="https://tiendly.lat" target="_blank">tiendly.lat</a> - Digital infrastructure for Cuban businesses</p>
+        <p><strong>Memlink:</strong> <a href="https://github.com/rblez/memlink" target="_blank">github.com/rblez/memlink</a> - Persistent memory across sessions</p>
+        <p><strong>Portfolio:</strong> <a href="https://rblez.com" target="_blank">rblez.com</a> - Terminal-style portfolio</p>
+        
+        <h3>📧 Contact</h3>
+        <p><strong>Email:</strong> <a href="mailto:hello@rblez.com">hello@rblez.com</a></p>
+        <p><strong>X/Twitter:</strong> <a href="https://x.com/rblezzzz" target="_blank">@rblezzzz</a></p>
+        <p><strong>GitHub:</strong> <a href="https://github.com/rblez" target="_blank">github.com/rblez</a></p>
+      </div>
+      
+      <!-- Desktop welcome message (shown only on desktop) -->
       <div class="line welcome" id="welcome"></div>
+      
       <!-- active prompt inserted by JS -->
     </div>
   </div>
